@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Additional;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 
 class AdditionalController extends Controller
@@ -23,8 +24,9 @@ class AdditionalController extends Controller
      */
     public function create()
     {
-        //
-        return view('additional.create');
+        $variants = Variant::query()->get();
+
+        return view('additional.create', compact('variants'));
     }
 
     /**
@@ -68,7 +70,10 @@ class AdditionalController extends Controller
     public function edit(string $id)
     {
         //
-        return view('additional.edit', compact('additional'));
+        $additional = Additional::query()->findOrFail($id);
+        $variants = Variant::query()->get();
+
+        return view('additional.edit', compact('additional', 'variants'));
 
     }
 

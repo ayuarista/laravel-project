@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use function Pest\Laravel\json;
+use App\Models\Additional;
 
 class MenuController extends Controller
 {
@@ -24,7 +25,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('menu.create');
+        $additionals = Additional::query()->get();
+        return view('menu.create', compact('additionals'));
     }
 
     /**
@@ -57,7 +59,7 @@ class MenuController extends Controller
     {
         $menu = Menu::query()->findOrFail($id);
 
-        $menu->load(['additional:id,name,description', 'additional.variant']);
+        $menu->load(['additional:id,name,description', 'additional.variants']);
 
         return view('menu.show', compact('menu'));
     }
@@ -68,9 +70,10 @@ class MenuController extends Controller
     public function edit(string $id)
     {
         $menu = Menu::query()->findOrFail($id);
-        $menu->load(['additional', 'additional.variant']);
+        $menu->load(['additional', 'additional.variants']);
+        $additional = Additional::query()->get();
 
-        return view('menu.edit', compact('menu'));
+        return view('menu.edit', compact(['menu', 'additional']));
 
     }
 

@@ -59,6 +59,8 @@ class VariantController extends Controller
     public function edit(string $id)
     {
         //
+        $variant = Variant::query()->findOrFail($id);
+
         return view('variant.edit', compact('variant'));
     }
 
